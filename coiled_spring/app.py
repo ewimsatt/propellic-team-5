@@ -112,16 +112,22 @@ detector = CoiledSpringDetector()
 
 # ── Sidebar ──────────────────────────────────────────────────────────────────
 with st.sidebar:
+    import os
+    _logo = "coiled_spring/assets/propellic-logo.png"
+    if os.path.exists(_logo):
+        st.image(_logo, use_container_width=True)
+    else:
+        st.markdown(
+            '<div style="padding:16px 0 4px; text-align:center; font-family:Montserrat,sans-serif;">'
+            '<span style="font-size:20px; font-weight:700; color:#f1f5f9;">Propellic</span>'
+            "</div>",
+            unsafe_allow_html=True,
+        )
     st.markdown(
         """
-        <div style="padding: 20px 0 12px; text-align:center; font-family:'Montserrat',sans-serif;">
-            <div style="display:inline-flex; align-items:center; gap:8px;">
-                <span style="font-size:22px; color:#E21A6B;">✦</span>
-                <span style="font-size:20px; font-weight:700; color:#f1f5f9;
-                             letter-spacing:-.02em;">Propellic</span>
-            </div>
+        <div style="text-align:center; font-family:'Montserrat',sans-serif; padding-bottom:12px;">
             <div style="font-size:11px; color:#E21A6B; text-transform:uppercase;
-                        letter-spacing:.12em; margin-top:4px; font-weight:600;">
+                        letter-spacing:.12em; font-weight:600;">
                 Coiled Spring™ Forecaster
             </div>
         </div>
