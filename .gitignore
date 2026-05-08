@@ -1,0 +1,35 @@
+# ============================================================
+# .gitignore — Coiled Spring Project
+# ============================================================
+
+# API keys & secrets — NEVER commit these
+config.py
+.env
+*.env
+secrets.py
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+*.egg-info/
+dist/
+build/
+
+# Streamlit
+.streamlit/secrets.toml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Exports / generated reports
+export/*.pdf
