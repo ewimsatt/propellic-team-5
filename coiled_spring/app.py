@@ -18,38 +18,71 @@ st.set_page_config(
 st.markdown(
     """
     <style>
-    /* Main background */
-    .stApp { background-color: #0b0f1a; }
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
 
-    /* Sidebar */
-    [data-testid="stSidebar"] { background-color: #0d1321; border-right: 1px solid #1e293b; }
+    /* Global font */
+    html, body, [class*="css"] { font-family: 'Montserrat', sans-serif; }
+
+    /* Main background — dark midnight */
+    .stApp { background-color: #0a1118; }
+
+    /* Sidebar — midnight brand color */
+    [data-testid="stSidebar"] {
+        background-color: #152534;
+        border-right: 1px solid #1e3348;
+    }
     [data-testid="stSidebar"] .stMarkdown { color: #94a3b8; }
 
-    /* Remove default padding from tabs */
-    .stTabs [data-baseweb="tab-list"] { gap: 4px; background-color: #0b0f1a; }
+    /* Tabs */
+    .stTabs [data-baseweb="tab-list"] { gap: 4px; background-color: #0a1118; }
     .stTabs [data-baseweb="tab"] {
-        color: #64748b; background-color: #131929;
+        color: #64748b; background-color: #152534;
         border-radius: 6px 6px 0 0; padding: 8px 20px;
-        border: 1px solid #1e293b; border-bottom: none;
+        border: 1px solid #1e3348; border-bottom: none;
+        font-family: 'Montserrat', sans-serif; font-weight: 600;
     }
     .stTabs [aria-selected="true"] {
-        color: #f1f5f9 !important; background-color: #1e293b !important;
-        border-color: #334155 !important;
+        color: #f1f5f9 !important; background-color: #1e3348 !important;
+        border-color: #E21A6B !important; border-top: 2px solid #E21A6B !important;
     }
 
     /* Expander */
-    .streamlit-expanderHeader { background-color: #131929 !important; }
+    .streamlit-expanderHeader {
+        background-color: #152534 !important;
+        border: 1px solid #1e3348 !important;
+    }
 
-    /* Metric */
-    [data-testid="stMetric"] { background: #131929; border-radius: 8px; padding: 12px; }
+    /* Buttons — Propellic pink */
+    .stButton > button {
+        background-color: #E21A6B !important;
+        color: white !important;
+        border: none !important;
+        font-family: 'Montserrat', sans-serif !important;
+        font-weight: 700 !important;
+        border-radius: 6px !important;
+        letter-spacing: .04em;
+    }
+    .stButton > button:hover { background-color: #c01559 !important; }
+
+    /* Download button */
+    .stDownloadButton > button {
+        background-color: #152534 !important;
+        color: #E21A6B !important;
+        border: 1px solid #E21A6B !important;
+        font-family: 'Montserrat', sans-serif !important;
+        font-weight: 700 !important;
+    }
 
     /* Scrollbar */
     ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: #0b0f1a; }
-    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+    ::-webkit-scrollbar-track { background: #0a1118; }
+    ::-webkit-scrollbar-thumb { background: #E21A6B; border-radius: 3px; }
 
     /* Divider */
-    hr { border-color: #1e293b !important; }
+    hr { border-color: #1e3348 !important; }
+
+    /* Headings */
+    h1, h2, h3 { font-family: 'Montserrat', sans-serif !important; font-weight: 700 !important; }
     </style>
     """,
     unsafe_allow_html=True,
@@ -81,14 +114,18 @@ detector = CoiledSpringDetector()
 with st.sidebar:
     st.markdown(
         """
-        <div style="padding: 16px 0 8px; text-align:center;">
-            <span style="font-size:28px;">🌀</span>
-            <div style="font-size:16px; font-weight:700; color:#f1f5f9;
-                        margin-top:4px;">Coiled Spring™</div>
-            <div style="font-size:10px; color:#475569; text-transform:uppercase;
-                        letter-spacing:.08em;">Opportunity Forecaster</div>
+        <div style="padding: 20px 0 12px; text-align:center; font-family:'Montserrat',sans-serif;">
+            <div style="display:inline-flex; align-items:center; gap:8px;">
+                <span style="font-size:22px; color:#E21A6B;">✦</span>
+                <span style="font-size:20px; font-weight:700; color:#f1f5f9;
+                             letter-spacing:-.02em;">Propellic</span>
+            </div>
+            <div style="font-size:11px; color:#E21A6B; text-transform:uppercase;
+                        letter-spacing:.12em; margin-top:4px; font-weight:600;">
+                Coiled Spring™ Forecaster
+            </div>
         </div>
-        <hr style="margin: 8px 0 16px;">
+        <hr style="margin: 4px 0 16px; border-color:#1e3348;">
         """,
         unsafe_allow_html=True,
     )

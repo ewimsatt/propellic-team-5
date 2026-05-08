@@ -51,19 +51,27 @@ RECOVERY_WINDOWS = {
     "economic": (30, 90),
 }
 
+# ── Propellic Brand Colors ───────────────────────────────────────────────────
+BRAND_PINK        = "#E21A6B"   # primary
+BRAND_MIDNIGHT    = "#152534"   # primary dark
+BRAND_PINK_LIGHT  = "#EB669C"   # secondary
+BRAND_PINK_PALE   = "#F7BFD5"   # secondary light
+BRAND_PLUM        = "#482342"   # secondary dark
+BRAND_WINE        = "#8F1F55"   # secondary deep
+
 # ── Chart / UI Colors ────────────────────────────────────────────────────────
-COLOR_INTENT          = "#3b82f6"
-COLOR_CVR             = "#f59e0b"
+COLOR_INTENT          = "#60a5fa"   # blue — contrasts pink on dark bg
+COLOR_CVR             = "#E21A6B"   # Propellic pink — primary metric
 COLOR_SIGNAL_WEATHER  = "#60a5fa"
-COLOR_SIGNAL_NEWS     = "#f472b6"
+COLOR_SIGNAL_NEWS     = "#EB669C"   # light pink
 COLOR_SIGNAL_SEASONAL = "#34d399"
 COLOR_SIGNAL_ECONOMIC = "#a78bfa"
-COLOR_SPRING_ZONE     = "rgba(245,158,11,0.07)"
+COLOR_SPRING_ZONE     = "rgba(226,26,107,0.07)"  # pink tint
 
-CHART_BG       = "#0b0f1a"
-CHART_GRID     = "#1e293b"
+CHART_BG       = "#0a1118"
+CHART_GRID     = "#1a2535"
 CHART_TEXT     = "#94a3b8"
-CHART_AXIS     = "#334155"
+CHART_AXIS     = "#263548"
 
 # ── Feature flag ─────────────────────────────────────────────────────────────
 USE_MOCK_DATA = not all([
