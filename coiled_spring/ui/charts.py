@@ -90,8 +90,8 @@ def build_divergence_chart(spring: CoiledSpring) -> go.Figure:
     )
 
     # Spring zone shading
-    spring_start = pd.Timestamp(spring.start_date)
-    spring_end   = pd.Timestamp(spring.end_date)
+    spring_start = str(spring.start_date)
+    spring_end   = str(spring.end_date)
     conf_color   = CONFIDENCE_COLORS.get(spring.confidence, "#f59e0b")
 
     fig.add_vrect(
