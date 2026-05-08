@@ -3,7 +3,15 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# ── Google Ads ───────────────────────────────────────────────────────────────
+# ── BigQuery (primary data source) ───────────────────────────────────────────
+BIGQUERY_KEY_PATH  = os.getenv(
+    "BIGQUERY_KEY_PATH",
+    os.path.join(os.path.dirname(__file__), "propellic-data-lake-key.json"),
+)
+BIGQUERY_PROJECT_ID = os.getenv("BIGQUERY_PROJECT_ID", "propellic-data-lake")
+USE_BIGQUERY = os.path.exists(BIGQUERY_KEY_PATH)
+
+# ── Google Ads API (legacy — superseded by BigQuery) ─────────────────────────
 GOOGLE_ADS_DEVELOPER_TOKEN = os.getenv("GOOGLE_ADS_DEVELOPER_TOKEN", "")
 GOOGLE_ADS_CLIENT_ID       = os.getenv("GOOGLE_ADS_CLIENT_ID", "")
 GOOGLE_ADS_CLIENT_SECRET   = os.getenv("GOOGLE_ADS_CLIENT_SECRET", "")
@@ -73,8 +81,9 @@ CHART_GRID     = "#1a2535"
 CHART_TEXT     = "#94a3b8"
 CHART_AXIS     = "#263548"
 
-# ── Feature flag ─────────────────────────────────────────────────────────────
-USE_MOCK_DATA = not all([
+# ── Feature flags ────────────────────────────────────────────────────────────
+# BigQuery takes priority over Google Ads API; mock is the last resort.
+USE_MOCK_DATA = not USE_BIGQUERY and not all([
     GOOGLE_ADS_DEVELOPER_TOKEN,
     GOOGLE_ADS_CLIENT_ID,
     GOOGLE_ADS_CLIENT_SECRET,

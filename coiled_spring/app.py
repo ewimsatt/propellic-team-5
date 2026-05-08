@@ -89,7 +89,7 @@ st.markdown(
 )
 
 # ── Imports (after page config) ──────────────────────────────────────────────
-from config import USE_MOCK_DATA, CONFIDENCE_COLORS
+from config import USE_MOCK_DATA, USE_BIGQUERY, CONFIDENCE_COLORS
 from mock_data import MockDataGenerator
 from data.google_ads import get_campaigns, get_campaign_timeseries
 from data.weather import get_weather_signal
@@ -266,7 +266,9 @@ def run_detection(
 
 # ── Main render ───────────────────────────────────────────────────────────────
 
-if USE_MOCK_DATA:
+if USE_BIGQUERY:
+    st.success("🔗 **Live Mode** — Connected to Propellic BigQuery data lake (propellic-data-lake)")
+elif USE_MOCK_DATA:
     render_demo_banner()
 
 if not selected_ids:
