@@ -172,7 +172,7 @@ def build_signal_overlay(
     for col in cols_to_plot:
         if col not in combined.columns:
             continue
-        series = combined[col].fillna(method="ffill")
+        series = combined[col].ffill()
         mn, mx = series.min(), series.max()
         normed = (series - mn) / (mx - mn) if mx != mn else series * 0
 
