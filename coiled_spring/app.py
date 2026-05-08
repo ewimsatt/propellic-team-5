@@ -147,17 +147,17 @@ with st.sidebar:
     )
 
     # Campaign selector
-    st.markdown("**Campaign**")
+    st.markdown("**Campaigns**")
     all_campaigns = get_campaigns()
     campaign_options = {c["name"]: c["id"] for c in all_campaigns}
-    selected_name = st.selectbox(
-        "Select campaign",
+    selected_names = st.multiselect(
+        "Select campaigns",
         options=list(campaign_options.keys()),
-        index=0,
+        default=[],
         label_visibility="collapsed",
+        placeholder="Choose one or more campaigns…",
     )
-    selected_ids = [campaign_options[selected_name]] if selected_name else []
-    selected_names = [selected_name] if selected_name else []
+    selected_ids = [campaign_options[n] for n in selected_names]
 
     st.markdown("---")
 
