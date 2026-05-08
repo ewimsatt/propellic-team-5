@@ -22,17 +22,28 @@ def get_campaigns() -> list[dict]:
         SELECT
             CAST(customer_id AS STRING)         AS id,
             customer_descriptive_name           AS name,
-            COUNT(DISTINCT segments_date)       AS days_of_data
+            MAX(segments_date)                  AS latest_date
         FROM `propellic-data-lake.raw_google_ads.account_performance_report`
         WHERE customer_manager = FALSE
           AND customer_test_account = FALSE
-          AND segments_date >= DATE_SUB(CURRENT_DATE(), INTERVAL 90 DAY)
         GROUP BY 1, 2
-        HAVING days_of_data >= 30
         ORDER BY name
     """
     rows = list(bq.query(query).result())
     return [{"id": r.id, "name": r.name} for r in rows]
+
+
+def get_data_date_range() -> tuple[date, date]:
+    """Return the actual min/max date available in the database."""
+    bq = _client()
+    query = """
+        SELECT MIN(segments_date) AS min_date, MAX(segments_date) AS max_date
+        FROM `propellic-data-lake.raw_google_ads.account_performance_report`
+        WHERE customer_manager = FALSE
+    """
+    rows = list(bq.query(query).result())
+    row = rows[0]
+    return row.min_date, row.max_date
 
 
 def get_campaign_timeseries(

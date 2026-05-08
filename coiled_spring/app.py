@@ -90,6 +90,16 @@ st.markdown(
 
 # ── Imports (after page config) ──────────────────────────────────────────────
 from config import USE_MOCK_DATA, USE_BIGQUERY, CONFIDENCE_COLORS
+
+if USE_BIGQUERY:
+    @st.cache_data(ttl=3600, show_spinner=False)
+    def _get_data_date_range():
+        from data.bigquery import get_data_date_range
+        return get_data_date_range()
+    _data_min_date, _data_max_date = _get_data_date_range()
+else:
+    _data_max_date = date.today()
+    _data_min_date = _data_max_date - timedelta(days=365)
 from mock_data import MockDataGenerator
 from data.google_ads import get_campaigns, get_campaign_timeseries
 from data.weather import get_weather_signal
@@ -155,10 +165,20 @@ with st.sidebar:
     col_s, col_e = st.columns(2)
     with col_s:
         start_date = st.date_input(
-            "From", value=date.today() - timedelta(days=89), label_visibility="visible"
+            "From",
+            value=_data_max_date - timedelta(days=89),
+            min_value=_data_min_date,
+            max_value=_data_max_date,
+            label_visibility="visible",
         )
     with col_e:
-        end_date = st.date_input("To", value=date.today(), label_visibility="visible")
+        end_date = st.date_input(
+            "To",
+            value=_data_max_date,
+            min_value=_data_min_date,
+            max_value=_data_max_date,
+            label_visibility="visible",
+        )
 
     st.markdown("---")
 
