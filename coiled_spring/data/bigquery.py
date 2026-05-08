@@ -10,7 +10,7 @@ from config import BIGQUERY_KEY_PATH, BIGQUERY_PROJECT_ID
 
 
 def _client():
-    from google.cloud import bigquery
+    import google.cloud.bigquery as bigquery
     os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = BIGQUERY_KEY_PATH
     return bigquery.Client(project=BIGQUERY_PROJECT_ID)
 
