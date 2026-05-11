@@ -90,8 +90,8 @@ def build_divergence_chart(spring: CoiledSpring) -> go.Figure:
     )
 
     # Spring zone shading
-    spring_start = pd.Timestamp(spring.start_date)
-    spring_end   = pd.Timestamp(spring.end_date)
+    spring_start = str(spring.start_date)
+    spring_end   = str(spring.end_date)
     conf_color   = CONFIDENCE_COLORS.get(spring.confidence, "#f59e0b")
 
     fig.add_vrect(
@@ -100,11 +100,20 @@ def build_divergence_chart(spring: CoiledSpring) -> go.Figure:
         layer="below",
         line_width=0,
     )
-    fig.add_vline(
-        x=spring_start,
+    fig.add_shape(
+        type="line",
+        x0=spring_start, x1=spring_start,
+        y0=0, y1=1,
+        xref="x", yref="paper",
         line=dict(color=conf_color, width=1.5, dash="dot"),
-        annotation_text="Spring starts",
-        annotation_font=dict(color=conf_color, size=10),
+    )
+    fig.add_annotation(
+        x=spring_start, y=1,
+        xref="x", yref="paper",
+        text="Spring starts",
+        showarrow=False,
+        font=dict(color=conf_color, size=10),
+        xanchor="left", yanchor="bottom",
     )
 
     layout = _dark_layout(
@@ -163,7 +172,7 @@ def build_signal_overlay(
     for col in cols_to_plot:
         if col not in combined.columns:
             continue
-        series = combined[col].fillna(method="ffill")
+        series = combined[col].ffill()
         mn, mx = series.min(), series.max()
         normed = (series - mn) / (mx - mn) if mx != mn else series * 0
 

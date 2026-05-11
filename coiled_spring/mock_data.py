@@ -308,9 +308,9 @@ class MockDataGenerator:
     # ── Search trends signal ─────────────────────────────────────────────────
 
     def get_trends_signal(self, campaign_id: str) -> pd.DataFrame:
-        cfg = next(c for c in CAMPAIGN_CONFIGS if c["id"] == campaign_id)
+        cfg = next((c for c in CAMPAIGN_CONFIGS if c["id"] == campaign_id), CAMPAIGN_CONFIGS[0])
         n = len(self.dates)
-        seed_val = int(campaign_id[-3:]) + 400
+        seed_val = (abs(hash(campaign_id)) % 900) + 400
         rng = np.random.default_rng(seed_val)
 
         base_index = 55 + rng.uniform(-5, 5)
@@ -333,7 +333,7 @@ class MockDataGenerator:
     # ── Seasonal index ───────────────────────────────────────────────────────
 
     def get_seasonal_signal(self, campaign_id: str) -> pd.DataFrame:
-        cfg = next(c for c in CAMPAIGN_CONFIGS if c["id"] == campaign_id)
+        cfg = next((c for c in CAMPAIGN_CONFIGS if c["id"] == campaign_id), CAMPAIGN_CONFIGS[0])
         n = len(self.dates)
 
         # Build a simple seasonal curve based on campaign type

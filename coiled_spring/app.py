@@ -18,45 +18,89 @@ st.set_page_config(
 st.markdown(
     """
     <style>
-    /* Main background */
-    .stApp { background-color: #0b0f1a; }
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
 
-    /* Sidebar */
-    [data-testid="stSidebar"] { background-color: #0d1321; border-right: 1px solid #1e293b; }
+    /* Global font */
+    html, body, [class*="css"] { font-family: 'Montserrat', sans-serif; }
+
+    /* Main background — dark midnight */
+    .stApp { background-color: #0a1118; }
+
+    /* Sidebar — midnight brand color */
+    [data-testid="stSidebar"] {
+        background-color: #152534;
+        border-right: 1px solid #1e3348;
+    }
     [data-testid="stSidebar"] .stMarkdown { color: #94a3b8; }
 
-    /* Remove default padding from tabs */
-    .stTabs [data-baseweb="tab-list"] { gap: 4px; background-color: #0b0f1a; }
+    /* Tabs */
+    .stTabs [data-baseweb="tab-list"] { gap: 4px; background-color: #0a1118; }
     .stTabs [data-baseweb="tab"] {
-        color: #64748b; background-color: #131929;
+        color: #64748b; background-color: #152534;
         border-radius: 6px 6px 0 0; padding: 8px 20px;
-        border: 1px solid #1e293b; border-bottom: none;
+        border: 1px solid #1e3348; border-bottom: none;
+        font-family: 'Montserrat', sans-serif; font-weight: 600;
     }
     .stTabs [aria-selected="true"] {
-        color: #f1f5f9 !important; background-color: #1e293b !important;
-        border-color: #334155 !important;
+        color: #f1f5f9 !important; background-color: #1e3348 !important;
+        border-color: #E21A6B !important; border-top: 2px solid #E21A6B !important;
     }
 
     /* Expander */
-    .streamlit-expanderHeader { background-color: #131929 !important; }
+    .streamlit-expanderHeader {
+        background-color: #152534 !important;
+        border: 1px solid #1e3348 !important;
+    }
 
-    /* Metric */
-    [data-testid="stMetric"] { background: #131929; border-radius: 8px; padding: 12px; }
+    /* Buttons — Propellic pink */
+    .stButton > button {
+        background-color: #E21A6B !important;
+        color: white !important;
+        border: none !important;
+        font-family: 'Montserrat', sans-serif !important;
+        font-weight: 700 !important;
+        border-radius: 6px !important;
+        letter-spacing: .04em;
+    }
+    .stButton > button:hover { background-color: #c01559 !important; }
+
+    /* Download button */
+    .stDownloadButton > button {
+        background-color: #152534 !important;
+        color: #E21A6B !important;
+        border: 1px solid #E21A6B !important;
+        font-family: 'Montserrat', sans-serif !important;
+        font-weight: 700 !important;
+    }
 
     /* Scrollbar */
     ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: #0b0f1a; }
-    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+    ::-webkit-scrollbar-track { background: #0a1118; }
+    ::-webkit-scrollbar-thumb { background: #E21A6B; border-radius: 3px; }
 
     /* Divider */
-    hr { border-color: #1e293b !important; }
+    hr { border-color: #1e3348 !important; }
+
+    /* Headings */
+    h1, h2, h3 { font-family: 'Montserrat', sans-serif !important; font-weight: 700 !important; }
     </style>
     """,
     unsafe_allow_html=True,
 )
 
 # ── Imports (after page config) ──────────────────────────────────────────────
-from config import USE_MOCK_DATA, CONFIDENCE_COLORS
+from config import USE_MOCK_DATA, USE_BIGQUERY, CONFIDENCE_COLORS
+
+if USE_BIGQUERY:
+    @st.cache_data(ttl=3600, show_spinner=False)
+    def _get_data_date_range():
+        from data.bigquery import get_data_date_range
+        return get_data_date_range()
+    _data_min_date, _data_max_date = _get_data_date_range()
+else:
+    _data_max_date = date.today()
+    _data_min_date = _data_max_date - timedelta(days=365)
+
 from mock_data import MockDataGenerator
 from data.google_ads import get_campaigns, get_campaign_timeseries
 from data.weather import get_weather_signal
@@ -79,16 +123,26 @@ detector = CoiledSpringDetector()
 
 # ── Sidebar ──────────────────────────────────────────────────────────────────
 with st.sidebar:
+    import os
+    _logo = "coiled_spring/assets/propellic-logo.png"
+    if os.path.exists(_logo):
+        st.image(_logo, use_container_width=True)
+    else:
+        st.markdown(
+            '<div style="padding:16px 0 4px; text-align:center; font-family:Montserrat,sans-serif;">'
+            '<span style="font-size:20px; font-weight:700; color:#f1f5f9;">Propellic</span>'
+            "</div>",
+            unsafe_allow_html=True,
+        )
     st.markdown(
         """
-        <div style="padding: 16px 0 8px; text-align:center;">
-            <span style="font-size:28px;">🌀</span>
-            <div style="font-size:16px; font-weight:700; color:#f1f5f9;
-                        margin-top:4px;">Coiled Spring™</div>
-            <div style="font-size:10px; color:#475569; text-transform:uppercase;
-                        letter-spacing:.08em;">Opportunity Forecaster</div>
+        <div style="text-align:center; font-family:'Montserrat',sans-serif; padding-bottom:12px;">
+            <div style="font-size:11px; color:#E21A6B; text-transform:uppercase;
+                        letter-spacing:.12em; font-weight:600;">
+                Coiled Spring™ Forecaster
+            </div>
         </div>
-        <hr style="margin: 8px 0 16px;">
+        <hr style="margin: 4px 0 16px; border-color:#1e3348;">
         """,
         unsafe_allow_html=True,
     )
@@ -100,8 +154,9 @@ with st.sidebar:
     selected_names = st.multiselect(
         "Select campaigns",
         options=list(campaign_options.keys()),
-        default=list(campaign_options.keys()),
+        default=[],
         label_visibility="collapsed",
+        placeholder="Choose one or more campaigns…",
     )
     selected_ids = [campaign_options[n] for n in selected_names]
 
@@ -112,10 +167,20 @@ with st.sidebar:
     col_s, col_e = st.columns(2)
     with col_s:
         start_date = st.date_input(
-            "From", value=date.today() - timedelta(days=89), label_visibility="visible"
+            "From",
+            value=_data_max_date - timedelta(days=89),
+            min_value=_data_min_date,
+            max_value=_data_max_date,
+            label_visibility="visible",
         )
     with col_e:
-        end_date = st.date_input("To", value=date.today(), label_visibility="visible")
+        end_date = st.date_input(
+            "To",
+            value=_data_max_date,
+            min_value=_data_min_date,
+            max_value=_data_max_date,
+            label_visibility="visible",
+        )
 
     st.markdown("---")
 
@@ -223,7 +288,9 @@ def run_detection(
 
 # ── Main render ───────────────────────────────────────────────────────────────
 
-if USE_MOCK_DATA:
+if USE_BIGQUERY:
+    st.success("🔗 **Live Mode** — Connected to Propellic BigQuery data lake (propellic-data-lake)")
+elif USE_MOCK_DATA:
     render_demo_banner()
 
 if not selected_ids:

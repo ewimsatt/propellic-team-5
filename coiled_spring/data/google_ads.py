@@ -1,4 +1,7 @@
-"""Google Ads API integration. Falls back to mock data when credentials are absent."""
+"""
+Campaign data layer.
+Priority order: BigQuery (live client data) -> Google Ads API -> Mock data.
+"""
 
 from __future__ import annotations
 
@@ -7,7 +10,7 @@ import pandas as pd
 
 from config import (
     GOOGLE_ADS_DEVELOPER_TOKEN, GOOGLE_ADS_CLIENT_ID, GOOGLE_ADS_CLIENT_SECRET,
-    GOOGLE_ADS_REFRESH_TOKEN, GOOGLE_ADS_CUSTOMER_ID, USE_MOCK_DATA,
+    GOOGLE_ADS_REFRESH_TOKEN, GOOGLE_ADS_CUSTOMER_ID, USE_MOCK_DATA, USE_BIGQUERY,
 )
 from mock_data import MockDataGenerator
 
@@ -15,6 +18,9 @@ _mock = MockDataGenerator()
 
 
 def get_campaigns() -> list[dict]:
+    if USE_BIGQUERY:
+        from data.bigquery import get_campaigns as bq_campaigns
+        return bq_campaigns()
     if USE_MOCK_DATA:
         return _mock.get_campaigns()
 
@@ -50,6 +56,9 @@ def get_campaign_timeseries(
     start_date: date,
     end_date: date,
 ) -> pd.DataFrame:
+    if USE_BIGQUERY:
+        from data.bigquery import get_campaign_timeseries as bq_ts
+        return bq_ts(campaign_id, start_date, end_date)
     if USE_MOCK_DATA:
         return _mock.get_campaign_timeseries(campaign_id)
 
