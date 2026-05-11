@@ -1,6 +1,6 @@
 """
 Campaign data layer.
-Priority order: BigQuery (live client data) → Google Ads API → Mock data.
+Priority order: BigQuery (live client data) -> Google Ads API -> Mock data.
 """
 
 from __future__ import annotations

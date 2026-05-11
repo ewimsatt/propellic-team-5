@@ -8,6 +8,7 @@ import plotly.graph_objects as go
 from analysis.detection import CoiledSpring
 from config import CONFIDENCE_COLORS, CONFIDENCE_BG, BRAND_PINK, BRAND_MIDNIGHT
 
+
 # ── KPI Summary Bar ──────────────────────────────────────────────────────────
 
 def render_kpi_bar(springs: list[CoiledSpring], kpis: dict) -> None:

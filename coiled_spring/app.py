@@ -100,6 +100,7 @@ if USE_BIGQUERY:
 else:
     _data_max_date = date.today()
     _data_min_date = _data_max_date - timedelta(days=365)
+
 from mock_data import MockDataGenerator
 from data.google_ads import get_campaigns, get_campaign_timeseries
 from data.weather import get_weather_signal
